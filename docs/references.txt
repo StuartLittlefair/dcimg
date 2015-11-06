@@ -1,0 +1,2 @@
+.. |Ddata| replace:: :class:`~dcimg.Ddata`
+.. |Dhead| replace:: :class:`~dcimg.Dhead`
