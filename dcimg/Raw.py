@@ -302,10 +302,8 @@ class Ddata(Dhead):
         # interpret data
         xbin, ybin = self.xbin, self.ybin
         if self.instrument == "MOSCAM":
-            # 2 vertically stacked windows, split at centre of chip
             wins = []
-            wins.append( Window(img[:self.ny/2, :], 0,         0, xbin, ybin) )
-            wins.append( Window(img[self.ny/2:, :], 0, self.ny/2, xbin, ybin) )
+            wins.append( Window(img, 0,         0, xbin, ybin) )
             
             # Build the UTime
             # expTime is same as delay
