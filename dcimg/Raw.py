@@ -70,8 +70,6 @@ class Dhead(object):
     timeStamp : float
         GPS (UTC) timestamp at exposure start
         
-    nsats : int
-        number of satellites used for GPS timestamp
     """    
     def __init__(self, run):
         if not run.endswith('.xml'):
@@ -105,8 +103,8 @@ class Dhead(object):
             self.nxmax = 2048
         else:
             raise DcimgError("Unrecognised Instrument: {}".format(cam))
-        self.nsats = getXMLAttr("nsats")
-        self.timestamp = getXMLAttr("timestamp") 
+        #self.nsats = getXMLAttr("nsats")
+        #self.timestamp = getXMLAttr("timestamp") 
         
         
 class Ddata(Dhead):
