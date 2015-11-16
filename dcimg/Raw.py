@@ -19,6 +19,18 @@ from trm.ultracam import Time as UTime
 
 import six
 
+def from_bytes (data, byteorder = 'little'):
+    if six.PY3:
+        return int.from_bytes(data,byteorder)
+    if isinstance(data, str):
+        data = bytearray(data)
+    if byteorder!='little':
+        data = reversed(data)
+    num = 0
+    for offset, byte in enumerate(data):
+        num += byte << (offset * 8)
+    return num
+
 class DcimgError(Exception):
     pass
     
@@ -338,32 +350,33 @@ class Ddata(Dhead):
         be in error
         """
         header = {}
-        bytes_to_skip = 4*int.from_bytes(hdr_bytes[8:12],byteorder='little')        
+        bytes_to_skip = 4*from_bytes(hdr_bytes[8:12],byteorder='little')
+        
         curr_index = 8 + bytes_to_skip
     
         # nframes
-        nfrms = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        nfrms = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
         header['nframes'] = nfrms
     
         # filesize
         curr_index = 48
-        header['filesize'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['filesize'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         # bytes per pixel
         curr_index = 156
-        header['bitdepth'] = 8*int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['bitdepth'] = 8*from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         # footer location 
         curr_index = 120
-        header['footer_loc'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['footer_loc'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         # number of columns (x-size)
         curr_index = 164
-        header['xsize_req'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['xsize_req'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         # bytes per row
         curr_index = 168
-        header['bytes_per_row'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['bytes_per_row'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
         #if we requested an image of nx by ny pixels, then DCIMG files
         #for the ORCA flash 4.0 still save the full array in x.
         header['xsize'] = header['bytes_per_row']/2
@@ -377,18 +390,18 @@ class Ddata(Dhead):
 
         # funny entry pair which references footer location
         curr_index = 192
-        odd = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        odd = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
         curr_index = 40
-        offset = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        offset = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
         header['footer_loc'] = odd+offset
     
         # number of rows
         curr_index = 172
-        header['ysize'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['ysize'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         # bytes per image
         curr_index = 176
-        header['bytes_per_img'] = int.from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+        header['bytes_per_img'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
     
         if header['bytes_per_img'] != header['bytes_per_row']*header['ysize']:
             err_str = "bytes per img ({bytes_per_img}) /= nrows ({ysize}) * bytes_per_row ({bytes_per_row})".format(**header)
@@ -402,8 +415,8 @@ class Ddata(Dhead):
         at least some floats in the DCIMG file are stored as a pair of
         4 byte ints, one representing the whole part, one representing the 
         fractional part"""
-        whole  = int.from_bytes(whole_bytes,byteorder='little')
-        frac   = int.from_bytes(frac_bytes,byteorder='little')
+        whole  = from_bytes(whole_bytes,byteorder='little')
+        frac   = from_bytes(frac_bytes,byteorder='little')
         if frac == 0:
             return whole
         else:
