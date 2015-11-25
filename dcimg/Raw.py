@@ -3,19 +3,20 @@ import numpy as np
 from math import floor, log10
 import os
 from astropy.time import Time
-#import display
 
 # labview XML parsing 
 from .lvxml import *
 
-from trm.ultracam.Constants import *
-from trm.ultracam.CCD import CCD
-from trm.ultracam.MCCD import MCCD
-from trm.ultracam.Window import Window
-from trm.ultracam.Uhead import Uhead
-from trm.ultracam.UErrors import PowerOnOffError, UltracamError
-from trm.ultracam.Raw import Rwin
-from trm.ultracam import Time as UTime
+useTRM = True
+try:
+    from trm.ultracam.Constants import *
+    from trm.ultracam.CCD import CCD
+    from trm.ultracam.MCCD import MCCD
+    from trm.ultracam.Window import Window
+    from trm.ultracam.Uhead import Uhead
+    from trm.ultracam import Time as UTime
+except:
+    useTRM = False
 
 import six
 
@@ -37,6 +38,7 @@ class DcimgError(Exception):
 class DendError(Exception):
     """Special Exception to be raised at end of file"""
     pass
+    
 class Dhead(object):
     """Represents essential metadata info of MOSCAM data read from the
     run###.xml.
@@ -61,9 +63,6 @@ class Dhead(object):
     user : dictionary 
         dictionary of user information. May be empty
 
-    win : Rwin
-        A list of Rwin objects, one per window. 
-
     xbin : int
         binning factor in X direction
 
@@ -78,9 +77,6 @@ class Dhead(object):
 
     exposeTime : float
         exposure delay, secs
-        
-    timeStamp : float
-        GPS (UTC) timestamp at exposure start
         
     """    
     def __init__(self, run):
@@ -144,7 +140,8 @@ class Ddata(Dhead):
     to access a frame that does not exist, it defaults to the start of the
     file.
 
-    The above code returns :class:`trm.ultracam.CCD` objects for MOSCAM data.     
+    The above code returns :class:`trm.ultracam.CCD` objects for MOSCAM data
+    if Tom's module is installed, otherwise it returns a numpy data array.     
     """    
     def __init__(self,run,nframe=1,flt=True):
         """Create Ddata object
@@ -289,6 +286,10 @@ class Ddata(Dhead):
         # move frame counter on by one            
         self._nf += 1
 
+        # if we can't install Tom's module, just return numpy array
+        if not useTRM:
+            return img
+        
         # now to build a :class:trm.ultracam.CCD object from the data
         # first we build a header
         head = Uhead()
@@ -334,9 +335,9 @@ class Ddata(Dhead):
         
     def time(self, nframe=None):
         if nframe:
-            return self.timestamps[nframe]
+            return self.timestamps[nframe-1]
         else:
-            return self.timestamps[self._nf]            
+            return self.timestamps[self._nf-1]            
         
     def _read_header_bytes(self):
         self._fobj.seek(0)
@@ -398,6 +399,8 @@ class Ddata(Dhead):
         # number of rows
         curr_index = 172
         header['ysize'] = from_bytes(hdr_bytes[curr_index:curr_index+4],byteorder='little')
+    
+        # TODO: what about ystart? 
     
         # bytes per image
         curr_index = 176
