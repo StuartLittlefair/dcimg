@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<datainfo>
+  <filesave_status>
+    <observatory_status>
+      <name>Thai National Observatory, Doi Inthanon, Thailand</name>
+      <telescope>Thai National Observatory 2.4m</telescope>
+    </observatory_status>
+    <instrument_status>
+      <name>Moscam</name>
+      <type>camera</type>
+      <frame_count>0</frame_count>
+      <byte_count read_bytes="283024" total_bytes="283024"/>
+      <detector_status name="Moscam" type="sCMOS" power="ON">
+        <chip_status name="ORCA-Flash4" type="Moscam" columns="2048" rows="2048" xshift="0.000000" yshift="0.000000" xscale="1.000000" yscale="1.000000" rotation="0.000000" fpunits="pixels"/>
+      </detector_status>
+      <application_status id="PCI Boot" dsp="YES" loaded="NO"/>
+      <application_status id="PCI Exec" dsp="YES" loaded="NO"/>
+      <application_status id="SDSU Boot" dsp="YES" loaded="NO"/>
+      <application_status id="SDSU Exec" dsp="YES" loaded="YES" name="standard" version="1.0" coff="na.xml"/>
+      <parameter_status location="EXEC" name="DWELL" type="int" access="readwrite" value="65257"/>
+      <parameter_status location="EXEC" name="NUM_EXPS" type="int" access="readwrite" value="-1"/>
+      <parameter_status location="EXEC" name="LED_FLSH" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="X1_START" type="int" access="readwrite" value="17"/>
+      <parameter_status location="EXEC" name="X1_SIZE" type="int" access="readwrite" value="528"/>
+      <parameter_status location="EXEC" name="Y1_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="Y1_SIZE" type="int" access="readwrite" value="536"/>
+      <parameter_status location="EXEC" name="X2_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="X2_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="Y2_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="Y2_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="X3_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="X3_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="Y3_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="Y3_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="X4_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="X4_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="Y4_START" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="Y4_SIZE" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="X_BIN" type="int" access="readwrite" value="2"/>
+      <parameter_status location="EXEC" name="Y_BIN" type="int" access="readwrite" value="2"/>
+      <parameter_status location="EXEC" name="EN_CLR" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="HV_GAIN" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="OUTPUT" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="SPEED" type="int" access="readwrite" value="0"/>
+      <parameter_status location="EXEC" name="X_SIZE" type="int" access="readwrite" value="283008"/>
+      <parameter_status location="EXEC" name="Y_SIZE" type="int" access="readwrite" value="1"/>
+      <parameter_status location="EXEC" name="END_PARAMTR" type="int" access="readwrite" value="*UNKNOWN*"/>
+    </instrument_status>
+  </filesave_status>
+  <data_status status="WARNING" wordsize="2" type="uint" framesize="566048" nframes="-1">
+    <utc_status>2014-01-25T20:37:45.189</utc_status>
+    <header_status status="OK" headerwords="16"/>
+    <frame_status status="WARNING" fullframe="YES" ncolumns="283008" nrows="1" nwindows="1" nchannels="1">
+      <window_status id="1" name="quad1win1" join="win1_1" status="OK" xleft="0" ybottom="0" xsize="2048" ysize="2048"/>
+      <channel_status id="1" name="quad1chan1" chip="ccd201" join="win1_1" index="col" status="OK" offset="0" size="1" stepcol="1" steprow="1"/>
+    </frame_status>
+  </data_status>
+  <user><!-- user information goes here -->    <target>SDSS J141126.20+200911.1</target>    <grating>NA</grating>    <filters>z</filters>    <slit_width>NA</slit_width>    <slit_angle>NA</slit_angle>    <ID>GTO</ID>    <PI>GTO</PI>    <Observers>mcpb,trm,mjm,spl</Observers>    <flags>data</flags>    <revision>130317</revision>    <ccd_temp>159.82</ccd_temp>    <X1_START>1</X1_START>    <SlidePos>1230.000000 pixels</SlidePos>    <Program>ULTRASPEC window creator and driver, version 2</Program></user>
+</datainfo>
