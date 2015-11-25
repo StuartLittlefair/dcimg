@@ -199,7 +199,7 @@ def make_app(db):
         # is a directory for e.g uls
         url(r"/(run[0-9]+)", RunHandler, dict(db=db), name="run"),
         url(r"/(.*)", MainHandler, dict(db=db), name="path")
-    ],debug=True)
+    ],debug=False)
 
 def run_fileserver(dir):
     db = {'dir':dir}
