@@ -170,7 +170,10 @@ class RunHandler(RequestHandler):
         # TIMESTAMP
         # bytes 12-15 are timestamp, number of seconds
         # bytes 16-19 are timestamp, number of nanoseconds / 100
-        timestamp = self.dcimg.timestamps[1+frame_id].value
+        if self.dcimg.format == 1:
+            timestamp = self.dcimg.time().value
+        else:
+            timestamp = self.dcimg.timestamps[1+frame_id].value
         nsecs = int(timestamp)
         nnsecs = int(1e7 * (timestamp-int(timestamp)))
         hdr_bytes[12:16] = struct.pack('<I', nsecs)
