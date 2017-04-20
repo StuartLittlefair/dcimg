@@ -107,6 +107,14 @@ class Dhead(object):
         self.user = {}
         self.user['object'] = getXMLAttr("Object")
         self.user['observer'] = getXMLAttr("Observer")
+        try:
+            # these settings are not guaranteed to exist
+            self.user['voffset'] = getXMLAttr("V Offset")
+            self.user['hoffset'] = getXMLAttr("H Offset")
+        except:
+            self.user['voffset'] = 1
+            self.user['hoffset'] = 1
+
         cam = getXMLAttr('Camera Model')
         if cam == "C11440-22C":
             self.instrument = "MOSCAM"
@@ -340,7 +348,7 @@ class Ddata(Dhead):
         xbin, ybin = self.xbin, self.ybin
         if self.instrument == "MOSCAM":
             wins = []
-            wins.append(Window(img, 0, 0, xbin, ybin))
+            wins.append(Window(img, 1+self.user['hoffset'], 1+self.user['voffset'], xbin, ybin))
 
             # Build the UTime
             # expTime is same as delay

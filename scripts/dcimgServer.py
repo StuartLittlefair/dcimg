@@ -44,16 +44,19 @@ class RunHandler(RequestHandler):
         try:
             action = self.get_argument('action')
             if action == "get_xml":
+                self.set_header("Content-Type", 'application/xml; charset="utf-8"')
                 self.get_xml(run_id)
             elif action == "get_frame":
                 try:
                     frame_id = self.get_argument('frame')
                     self.get_frame(run_id, int(frame_id))
-                except:
+                except Exception as err:
+                    print(err)
                     raise tornado.web.HTTPError(400)
             else:
                 raise tornado.web.HTTPError(400)
-        except:
+        except Exception as err:
+            print(err)
             raise tornado.web.HTTPError(400)
 
     def load_Ddata(self, run_id):
@@ -88,6 +91,8 @@ class RunHandler(RequestHandler):
         xml.find('//data_status').attrib['framesize'] = str(x_size*2 + 32)
         xml.find('//parameter_status[@name="X1_SIZE"]').attrib['value'] = str(self.dcimg.nx)
         xml.find('//parameter_status[@name="Y1_SIZE"]').attrib['value'] = str(self.dcimg.ny)
+        xml.find('//parameter_status[@name="Y1_START"]').attrib['value'] = str(self.dcimg.user['voffset'])
+        xml.find('//parameter_status[@name="X1_START"]').attrib['value'] = str(self.dcimg.user['hoffset'])
 
         # now DWELL, set to exposure time
         xml.find('//parameter_status[@name="DWELL"]').attrib['value'] = str(int(10000*self.dcimg.exposeTime))
