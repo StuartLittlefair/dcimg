@@ -348,7 +348,7 @@ class Ddata(Dhead):
         xbin, ybin = self.xbin, self.ybin
         if self.instrument == "MOSCAM":
             wins = []
-            wins.append(Window(img, 1+self.user['hoffset'], 1+self.user['voffset'], xbin, ybin))
+            wins.append(Window(img, self.user['hoffset'], self.user['voffset'], xbin, ybin))
 
             # Build the UTime
             # expTime is same as delay
